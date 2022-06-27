@@ -1,0 +1,365 @@
+﻿Build1=Default,b4a.whats.app
+File1=b4a.png
+File10=conversas.bal
+File11=foto.jpg
+File12=ic1menu.png
+File13=ic1puser.png
+File14=ic2menu.png
+File15=ic2puser.png
+File16=ic3menu.png
+File17=ic3puser.png
+File18=iccontato.png
+File19=Main.bal
+File2=b4i.png
+File20=Page1.bal
+File21=Page2.bal
+File22=Page3.bal
+File23=semimg.png
+File3=b4j.png
+File4=callbranco.png
+File5=callcinza.png
+File6=calloff.png
+File7=chamadas.bal
+File8=checkvisto.jpg
+File9=contatos.bal
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup12=Default Group
+FileGroup13=Default Group
+FileGroup14=Default Group
+FileGroup15=Default Group
+FileGroup16=Default Group
+FileGroup17=Default Group
+FileGroup18=Default Group
+FileGroup19=Default Group
+FileGroup2=Default Group
+FileGroup20=Default Group
+FileGroup21=Default Group
+FileGroup22=Default Group
+FileGroup23=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+FileGroup9=Default Group
+Group=Default Group
+Library1=core
+Library2=tabstripviewpager
+Library3=javaobject
+Library4=stringutils
+Library5=reflection
+Library6=phone
+Library7=xcustomlistview
+Library8=xui
+ManifestCode=AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="30"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~~\n~~\n~'********* TabStrip ***********************~\n~CreateResource(drawable, background_tab.xml, ~\n~<selector xmlns:android="http://schemas.android.com/apk/res/android" ~\n~	android:exitFadeDuration="@android:integer/config_shortAnimTime">~\n~    <item android:state_pressed="true" android:drawable="@color/background_tab_pressed" />~\n~    <item android:state_focused="true" android:drawable="@color/background_tab_pressed"/>~\n~    <item android:drawable="@android:color/transparent"/>~\n~</selector>)~\n~CreateResource(values, colors.xml,~\n~<resources>~\n~    <color name="background_tab_pressed">#6633B5E5</color>~\n~</resources>)~\n~'******************************************~\n~~\n~
+Module1=geral
+Module2=Starter
+NumberOfFiles=23
+NumberOfLibraries=8
+NumberOfModules=2
+Version=11
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: WhatsB4A
+	#VersionCode: 1
+	#VersionName: 1.0
+	#SupportedOrientations: portrait
+	#CanInstallToExternalStorage: False
+	#AdditionalJar: com.android.support:support-v4
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: False
+#End Region
+
+Sub Process_Globals
+End Sub
+
+Sub Globals
+	Private TabStrip1 As TabStrip
+
+	
+	'ACTION BAR
+	Private paction As Panel
+	Private ic1actionmenu As ImageView
+	Private ic2actionmenu As ImageView
+	Private ic3actionmenu As ImageView
+	
+	
+	'CLV PAGE 3
+	Private lbnomechamadas As Label
+	Private lbdatachamadas As Label
+	Private imgchamadas As ImageView
+	Private icchamadas As ImageView
+	Private pline As Panel
+	Private imgcallchamadas As ImageView
+	Private clvCalls As CustomListView
+	
+	
+	
+	'CLV PAGE 2
+	Private clvChats As CustomListView
+	Private imgconversas As ImageView
+	Private lbnomeconversas As Label
+	Private imgvistoconversas As ImageView
+	Private lbmensagemconversas As Label
+	Private lbhoraconversas As Label
+	
+	
+	
+	'CLV PAGE 3
+	Private clvContacts As CustomListView
+	Private lbnomecontatos As Label
+	Private imgcontatos As ImageView
+	Private lbhoracontatos As Label
+	Private lbmensagemcontatos As Label
+	Private pdentroimguser As Panel
+	Private imgpuser As ImageView
+	Private pimguser As Panel
+	
+	
+	'CLICK ON PHOTO
+	Private ic1puser As ImageView
+	Private ic2puser As ImageView
+	Private ic3puser As ImageView
+	
+	
+	
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+
+	'STATUS BAR
+	geral.Set_StatusBarColor(Colors.RGB(5,76,68))
+	
+	'LAYOUT
+	Activity.LoadLayout("Main")
+	
+	'TABSTRIP
+	TabStrip1.LoadLayout("Page1", "CALL")
+	TabStrip1.LoadLayout("Page2", "CHATS")
+	TabStrip1.LoadLayout("Page3", "CONTACT")
+	
+	'LOAD
+	Carrega_Imagens
+	CriaLista_Chamadas
+	CriaLista_Conversas
+	CriaLista_Contatos
+	
+	'CENTER THE 3 LABELS ON TABSTRIP
+	For Each lbl As Label In geral.Get_AllTabLabels(TabStrip1)
+		lbl.Width = 100%x / 3
+	Next
+	
+	
+End Sub
+
+
+
+
+Sub Carrega_Imagens
+	geral.Load_Image(ic1actionmenu, File.DirAssets,"ic1menu.png")
+	geral.Load_Image(ic2actionmenu, File.DirAssets,"callbranco.png")
+	geral.Load_Image(ic3actionmenu, File.DirAssets,"ic3menu.png")
+	geral.Load_Image(ic1puser, File.DirAssets,"ic1puser.png")
+	geral.Load_Image(ic2puser, File.DirAssets,"ic2puser.png")
+	geral.Load_Image(ic3puser, File.DirAssets,"ic3puser.png")
+	geral.Center_Image(imgpuser, File.DirAssets,"foto.jpg")
+End Sub
+
+
+
+
+
+
+
+
+Sub TabStrip1_PageSelected (Position As Int)
+	
+	If Position = 0 Then
+		geral.Load_Image(ic2actionmenu, File.DirAssets,"callbranco.png")
+	Else if Position = 1 Then
+		geral.Load_Image(ic2actionmenu, File.DirAssets,"ic2menu.png")
+	Else
+		geral.Load_Image(ic2actionmenu, File.DirAssets,"iccontato.png")
+	End If
+
+	Dim i As Int
+	For Each lbl As Label In geral.Get_AllTabLabels(TabStrip1)
+		If i = Position Then lbl.TextColor = Colors.White Else lbl.TextColor = Colors.ARGB(150,255,255,255)
+		i = i + 1
+	Next
+	
+End Sub
+
+
+Sub Activity_Resume
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+End Sub
+
+
+
+
+
+Sub CriaLista_Chamadas
+	
+	For i = 0 To 2
+		Private p As Panel
+		p.Initialize("p")
+		p.SetLayout(0,0,clvCalls.AsView.Width,10%Y)
+		clvCalls.Add(p,i)
+		p.LoadLayout("chamadas")
+	
+		Private ii As Int = Rnd(0,5)
+		If ii = 1 Then
+			lbnomechamadas.Text = "Basic4Android"
+			geral.Round_Image(imgchamadas,File.DirAssets,"b4a.png")
+		Else if  ii = 2 Then
+			lbnomechamadas.Text = "B4i iOS"
+			geral.Round_Image(imgchamadas,File.DirAssets,"b4i.png")
+		else If ii = 3 Then
+			lbnomechamadas.Text = "B4J my Friend"
+			geral.Round_Image(imgchamadas,File.DirAssets,"b4j.png")
+		else If ii = 4 Then
+			lbnomechamadas.Text = "Douglas Farias"
+			geral.Round_Image(imgchamadas,File.DirAssets,"foto.jpg")
+		Else
+			lbnomechamadas.Text = "+55 51 8151-4295"
+			geral.Round_Image(imgchamadas,File.DirAssets,"semimg.png")
+		End If
+	 
+		geral.Load_Image(icchamadas,File.DirAssets,"calloff.png")
+		geral.Load_Image(imgcallchamadas,File.DirAssets,"callcinza.png")
+		lbdatachamadas.Text =  "10 de março, 18:30"
+	Next
+	
+End Sub
+
+
+
+
+Sub CriaLista_Conversas
+	
+	For i = 0 To 20
+		Private p As Panel
+		p.Initialize("p")
+		p.SetLayout(0,0,clvChats.AsView.Width,10%Y)
+		clvChats.Add(p,i)
+		p.LoadLayout("conversas")
+
+		Private ii As Int = Rnd(0,5)
+		If ii = 1 Then
+			lbnomeconversas.Text = "Basic4Android"
+			geral.Round_Image(imgconversas,File.DirAssets,"b4a.png")
+		Else if  ii = 2 Then
+			lbnomeconversas.Text = "B4i iOS"
+			geral.Round_Image(imgconversas,File.DirAssets,"b4i.png")
+		else If ii = 3 Then
+			lbnomeconversas.Text = "B4J my Friend"
+			geral.Round_Image(imgconversas,File.DirAssets,"b4j.png")
+		else If ii = 4 Then
+			lbnomeconversas.Text = "Douglas Farias"
+			geral.Round_Image(imgconversas,File.DirAssets,"foto.jpg")
+		Else
+			lbnomeconversas.Text = "+55 51 8151-4295"
+			geral.Round_Image(imgconversas,File.DirAssets,"semimg.png")
+		End If
+		
+		geral.Load_Image(imgvistoconversas,File.DirAssets,"checkvisto.jpg")
+		lbmensagemconversas.Text =   "Estou fazendo o whatsb4a"
+	Next
+	
+End Sub
+
+
+
+Sub CriaLista_Contatos
+	
+	For i = 0 To 10
+		Private p As Panel
+		p.Initialize("p")
+		p.SetLayout(0,0,clvContacts.AsView.Width,10%Y)
+		clvContacts.Add(p,i)
+		p.LoadLayout("contatos")
+	
+		Private ii As Int = Rnd(0,5)
+		If ii = 1 Then
+			lbnomecontatos.Text = "Basic4Android"
+			geral.Round_Image(imgcontatos,File.DirAssets,"b4a.png")
+		Else if  ii = 2 Then
+			lbnomecontatos.Text = "B4i iOS"
+			geral.Round_Image(imgcontatos,File.DirAssets,"b4i.png")
+		else If ii = 3 Then
+			lbnomecontatos.Text = "B4J my Friend"
+			geral.Round_Image(imgcontatos,File.DirAssets,"b4j.png")
+		else If ii = 4 Then
+			lbnomecontatos.Text = "Douglas Farias"
+			geral.Round_Image(imgcontatos,File.DirAssets,"foto.jpg")
+		Else
+			lbnomecontatos.Text = "+55 51 8151-4295"
+			geral.Round_Image(imgcontatos,File.DirAssets,"semimg.png")
+		End If
+	 
+		lbhoracontatos.Text = "CELULAR"
+		lbmensagemcontatos.Text =  "Alguma Frase sobre mim aqui"
+	Next
+	
+End Sub
+
+
+
+
+
+
+Sub Activity_KeyPress(KeyCode As Int) As Boolean
+	
+	If KeyCode = KeyCodes.KEYCODE_BACK Then
+		If pimguser.Visible Then
+			pimguser.Visible = False
+			Return True
+		End If
+	End If
+	Return False
+		
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sub imgconversas_Click
+	pimguser.SetVisibleAnimated(300,True)
+End Sub
+
+Sub pimguser_Click
+	pimguser.Visible = False
+End Sub
+
+
+
+Sub imgcontatos_Click
+	pimguser.SetVisibleAnimated(300,True)
+End Sub
+
+
+Sub imgchamadas_Click
+	pimguser.SetVisibleAnimated(300,True)
+End Sub
+
+
+
+
